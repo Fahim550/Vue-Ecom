@@ -163,7 +163,7 @@ watch([getPrimary, getSurface, isDarkTheme], () => {
             </div>
         </div>
 
-        <div class="col-span-12 xl:col-span-6">
+        <!-- <div class="col-span-12 xl:col-span-6">
             <div class="card">
                 <div class="font-semibold text-xl mb-4">Recent Sales</div>
                 <DataTable :value="products" :rows="5" :paginator="true" responsiveLayout="scroll">
@@ -268,8 +268,8 @@ watch([getPrimary, getSurface, isDarkTheme], () => {
                     </li>
                 </ul>
             </div>
-        </div>
-        <div class="col-span-12 xl:col-span-6">
+        </div> -->
+        <!-- <div class="col-span-12 xl:col-span-6">
             <div class="card">
                 <div class="font-semibold text-xl mb-4">Revenue Stream</div>
                 <Chart type="bar" :data="chartData" :options="chartOptions" class="h-80" />
@@ -339,6 +339,6 @@ watch([getPrimary, getSurface, isDarkTheme], () => {
                     </li>
                 </ul>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
