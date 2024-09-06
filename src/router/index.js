@@ -19,9 +19,14 @@ const router = createRouter({
                     component: () => import('@/views/uikit/FormLayout.vue')
                 },
                 {
-                    path: '/uikit/admin/product',
+                    path: '/uikit/admin/products',
                     name: 'product',
                     component: () => import('@/views/uikit/admin/Products.vue')
+                },
+                {
+                    path: '/uikit/admin/reviews',
+                    name: 'product',
+                    component: () => import('@/views/uikit/admin/Reviews.vue')
                 },
                 {
                     path: '/uikit/input',

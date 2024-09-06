@@ -11,12 +11,12 @@ const model = ref([
     {
         label: 'Product',
         items: [
-            { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', to: '/uikit/formlayout' },
-            { label: 'Products', icon: 'pi pi-fw pi-mobile', to: '/uikit/admin/product' },
+            // { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', to: '/uikit/formlayout' },
+            { label: 'Products', icon: 'pi pi-fw pi-mobile', to: '/uikit/admin/products' },
             // { label: 'Input', icon: 'pi pi-fw pi-check-square', to: '/uikit/input' },
             // { label: 'Button', icon: 'pi pi-fw pi-mobile', to: '/uikit/button', class: 'rotated-icon' },
             // { label: 'Table', icon: 'pi pi-fw pi-table', to: '/uikit/table' },
-            // { label: 'List', icon: 'pi pi-fw pi-list', to: '/uikit/list' },
+            { label: 'List', icon: 'pi pi-fw pi-list', to: '/uikit/list' },
             // { label: 'Tree', icon: 'pi pi-fw pi-share-alt', to: '/uikit/tree' },
             // { label: 'Panel', icon: 'pi pi-fw pi-tablet', to: '/uikit/panel' },
             // { label: 'Overlay', icon: 'pi pi-fw pi-clone', to: '/uikit/overlay' },
@@ -29,6 +29,12 @@ const model = ref([
             // { label: 'Misc', icon: 'pi pi-fw pi-circle', to: '/uikit/misc' }
         ]
     },
+    {
+        label: 'Review',
+        items: [
+            { label: 'Review', icon: 'pi pi-fw pi-id-card', to: '/uikit/admin/reviews' },
+    ]
+    }
     // {
     //     label: 'Pages',
     //     icon: 'pi pi-fw pi-briefcase',
