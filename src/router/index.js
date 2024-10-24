@@ -25,7 +25,7 @@ const router = createRouter({
                 },
                 {
                     path: '/uikit/admin/reviews',
-                    name: 'product',
+                    name: 'reviews',
                     component: () => import('@/views/uikit/admin/Reviews.vue')
                 },
                 {
@@ -131,6 +131,11 @@ const router = createRouter({
             path: '/auth/login',
             name: 'login',
             component: () => import('@/views/pages/auth/Login.vue')
+        },
+        {
+            path: '/auth/registration',
+            name: 'registration',
+            component: () => import('@/views/pages/auth/Registration.vue')
         },
         {
             path: '/auth/access',

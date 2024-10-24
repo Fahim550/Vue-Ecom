@@ -10,11 +10,11 @@
     "dependencies": {
         "@primevue/themes": "^4.0.0",
         "chart.js": "3.3.2",
-        "firebase": "^10.13.0",
+        "firebase": "^10.13.1",
         "primeicons": "^6.0.1",
         "primevue": "^4.0.0",
         "vue": "^3.4.34",
-        "vue-router": "^4.4.0",
+        "vue-router": "^4.4.5",
         "vuefire": "^3.2.0"
     },
     "devDependencies": {

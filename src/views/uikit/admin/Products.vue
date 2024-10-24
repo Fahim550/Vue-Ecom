@@ -1,9 +1,8 @@
 <script setup>
 import { onMounted, reactive } from 'vue';
 // const db = useFirestore();
-import { useCollection } from 'vuefire';
-import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from '@/database/FirebaseConfig';
+import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore';
 import Card from 'primevue/card';
 import { ref } from 'vue';
 
@@ -96,19 +95,19 @@ onMounted(async () => {
 <template>
     <Fluid>
         <div class="flex flex-col md:flex-row gap-8">
-            <div class="md:w-full card flex gap-8">
+            <div class="md:w-full card flex gap-8 ">
                 <div class="flex flex-col gap-4 w-1/2">
                     <div v-if="state.productData.length > 0">
                         <p class="text-green-500 font-bold">Your product list in your inventory</p>
                         <div v-for="product in state.productData" :key="product">
-                            <Card style="width: 25rem; overflow: hidden">
+                            <Card style="width: 25rem; overflow: hidden" class="mt-4">
                                 <template #header>
-                                    <img alt="user header" :src="product.url" class="w-full" />
+                                    <img alt="user header" :src="product?.url" class="w-full" />
                                 </template>
-                                <template #title>{{ product.name }}</template>
+                                <template #title>{{ product?.name }}</template>
                                 <template #content>
-                                    <p class="m-0">{{ product.description }}</p>
-                                    <p class="m-0">Price : {{ product.price }} tk - Quantity : {{ product.quantity }}</p>
+                                    <p class="m-0">{{ product?.description }}</p>
+                                    <p class="m-0">Price : {{ product?.price }} tk - Quantity : {{ product?.quantity }}</p>
                                 </template>
                                 <template #footer>
                                     <div class="flex gap-4 mt-1">
@@ -165,10 +164,10 @@ onMounted(async () => {
                         <p class="text-red-500">You have no product in your inventory</p>
                     </div>
                 </div>
-                <div class="flex flex-col gap-4 w-1/2">
+                <div class="flex flex-col gap-4 w-1/2 ">
                     <div class="flex flex-col gap-2">
                         <label for="name1">Name</label>
-                        <InputText id="name1" type="text" v-model="state.name" />
+                        <InputText id="name1" type="text" v-model="state.name0" />
                     </div>
                     <div class="flex flex-col gap-2">
                         <label for="price">Price</label>

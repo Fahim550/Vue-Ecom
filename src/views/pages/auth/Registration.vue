@@ -1,35 +1,39 @@
 <script setup>
 import FloatingConfigurator from '@/components/FloatingConfigurator.vue';
 import { db } from '@/database/FirebaseConfig';
-import { query } from 'firebase/database';
-import { collection, getDocs, where } from 'firebase/firestore';
+import { addDoc, collection } from 'firebase/firestore';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
+const name = ref('');
 const email = ref('');
 const password = ref('');
 const checked = ref(false);
 const router = useRouter();
-const login = async () => {
-    const q = query(collection(db, 'users'), where('email', '==', email.value), where('password', '==', password.value));
-
-    let flag = false;
-    const querySnapshot = await getDocs(q);
-    if (querySnapshot) {
-        querySnapshot.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, ' => ', doc.data());
-            flag = true;
+const userAuth = { email: 'admin123@gmail.com', password: '1234' };
+const createAccount = async () => {
+    // if (email.value === userAuth.email && password.value === userAuth.password) {
+    //     sessionStorage.setItem('email', email);
+    //     sessionStorage.setItem('password', password);
+    //     router.push('/');
+    // } else {
+    //     alert('email and password are invalid');
+    // }
+    try {
+        const docRef = await addDoc(collection(db, 'users'), {
+            name: name.value,
+            email: email.value,
+            password: password.value
         });
+        router.push('/auth/login');
+    } catch (error) {
+        alert('error occurred while creating account');
     }
-    if (flag) {
-        alert('there is user');
-        sessionStorage.setItem('email', email.value);
-        sessionStorage.setItem('password', password.value);
-        router.push('/');
-    } else {
-        alert('there is no users please create a new user from registration');
-    }
+    // console.log('addProducts', docRef.id);
+
+    (name.value = ''), (email.value = ''), (password.value = '');
+    console.log('email', email.value);
+    console.log('password', password.value);
 };
 </script>
 
@@ -57,11 +61,13 @@ const login = async () => {
                                 />
                             </g>
                         </svg>
-                        <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">Welcome to Sign In Page!</div>
+                        <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">Welcome to Registration Page!</div>
                         <span class="text-muted-color font-medium">Sign in to continue</span>
                     </div>
 
                     <div>
+                        <label for="name1" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Name</label>
+                        <InputText id="name1" type="text" placeholder="Email Name" class="w-full md:w-[30rem] mb-8" v-model="name" />
                         <label for="email1" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email</label>
                         <InputText id="email1" type="text" placeholder="Email address" class="w-full md:w-[30rem] mb-8" v-model="email" />
 
@@ -75,7 +81,7 @@ const login = async () => {
                             </div>
                             <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Forgot password?</span>
                         </div>
-                        <Button @click="login" label="Sign In" class="w-full"></Button>
+                        <Button @click="createAccount" label="Sign In" class="w-full"></Button>
                     </div>
                 </div>
             </div>
