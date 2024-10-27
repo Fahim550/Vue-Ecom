@@ -1,11 +1,16 @@
 <script setup>
+import { db } from '@/database/FirebaseConfig';
 import { useLayout } from '@/layout/composables/layout';
-import { computed, ref, watch } from 'vue';
+import { query } from 'firebase/database';
+import { collection, getDocs, where } from 'firebase/firestore';
+import { computed, onMounted, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import AppFooter from './AppFooter.vue';
 import AppSidebar from './AppSidebar.vue';
 import AppTopbar from './AppTopbar.vue';
 
 const { layoutConfig, layoutState, isSidebarActive, resetMenu } = useLayout();
+const router = useRouter();
 
 const outsideClickListener = ref(null);
 
@@ -51,6 +56,25 @@ function isOutsideClicked(event) {
 
     return !(sidebarEl.isSameNode(event.target) || sidebarEl.contains(event.target) || topbarEl.isSameNode(event.target) || topbarEl.contains(event.target));
 }
+// onmount
+onMounted(async () => {
+    const email = sessionStorage.getItem('email');
+    const password = sessionStorage.getItem('password');
+    const q = query(collection(db, 'users'), where('email', '==', email), where('password', '==', password));
+
+    let flag = false;
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot) {
+        querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, ' => ', doc.data());
+            flag = true;
+        });
+    }
+    if (!flag) {
+        router.push('/auth/login');
+    }
+});
 </script>
 
 <template>

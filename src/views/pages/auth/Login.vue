@@ -26,7 +26,7 @@ const login = async () => {
         alert('there is user');
         sessionStorage.setItem('email', email.value);
         sessionStorage.setItem('password', password.value);
-        router.push('/');
+        router.push('/admin/dashboard');
     } else {
         alert('there is no users please create a new user from registration');
     }
