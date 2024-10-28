@@ -29,7 +29,7 @@ onMounted(async () => {
                 <span class="text-muted-color text-2xl">Placerat in egestas erat...</span>
             </div>
 
-            <Card v-for="product in state.productData" :title="product.name" :description="product.description" :price="product.price" :src="product.url" :id="product.id" :quantity="product.quantity" :key="product" />
+            <Card v-for="product in state.productData" :title="product.name" :description="product.description" :price="product.price" :src="product.url" :id="product.id" :quantity="product.quantity" :product="product" :key="product" />
         </div>
     </div>
 </template>

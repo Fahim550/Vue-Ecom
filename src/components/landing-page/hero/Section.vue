@@ -19,8 +19,7 @@ function smoothScroll(id) {
             <Button label="Shop Now" as="router-link" to="/product" rounded class="!text-xl mt-8 !px-4"></Button>
         </div>
         <div class="flex justify-center md:justify-end">
-            <img src="../../../components/shared/watch.png" alt="Hero Image" class="w-9/12 md:w-full" />
+            <img src="../../../components/shared/watch.png" alt="Hero Image" class="w-9/12 md:w-full transition ease-linear duration-300 hover:scale-125" />
         </div>
     </div>
-   
 </template>

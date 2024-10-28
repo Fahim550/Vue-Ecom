@@ -1,4 +1,5 @@
 <script setup>
+import { store } from '@/composables/data';
 function smoothScroll(id) {
     document.body.click();
     document.querySelector(id).scrollIntoView({
@@ -61,11 +62,10 @@ function smoothScroll(id) {
                 </li>
             </ul>
             <div class="flex border-t lg:border-t-0 border-surface py-4 lg:py-0 mt-4 lg:mt-0 gap-2">
-                <Button label="Login" text as="router-link" to="/auth/login" rounded></Button>
+                <!-- <Button label="Login" text as="router-link" to="/auth/login" rounded></Button> -->
+                <button className="pi pi-heart-fill py-2 px-4 border  bg-pink-500   text-white text-lg font-semibold rounded-3xl shadow-md ">{{ (' ', store.addToCartProduct) }}</button>
                 <Button label="Register" to="/auth/login" rounded></Button>
             </div>
         </div>
     </div>
-
-    
 </template>
