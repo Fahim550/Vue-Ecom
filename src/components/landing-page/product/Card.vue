@@ -1,16 +1,28 @@
 <script setup>
+import { useState } from '@/composables/Store';
+import { useRouter } from 'vue-router';
+
 const props = defineProps(['title', 'description', 'price', 'src', 'quantity', 'id', 'product']);
+const { state } = useState();
+const router = useRouter();
 const addToCart = (product) => {
+    state.addToCart = [...state.addToCart, product];
+    console.log('product addToCart', state.addToCart);
     const sessionProduct = JSON.parse(sessionStorage.getItem('cartProduct'));
     console.log('sessionProduct', sessionProduct);
     const productArray = sessionProduct ? [...sessionProduct] : [];
-    if (sessionProduct?.length > 0) {
+    if (sessionProduct && sessionProduct.length > 0) {
         productArray.push(product);
-        sessionStorage.setItem('cartProduct', JSON.stringify([productArray]));
+        sessionStorage.setItem('cartProduct', JSON.stringify(productArray));
     } else {
         sessionStorage.setItem('cartProduct', JSON.stringify([product]));
         console.log('add product', product);
     }
+};
+const buyNow = (product) => {
+    state.buyNow = product;
+    console.log('buyNow', state.buyNow);
+    router.push(`/product/details?productId=${product.id}`);
 };
 </script>
 <template>
@@ -40,6 +52,7 @@ const addToCart = (product) => {
                                 {{ ' ' }}Cart
                             </button>
                             <button
+                                @click="buyNow(props.product)"
                                 className="pi pi-shopping-cart py-2 px-4 border bg-gradient-to-r from-cyan-500 to-blue-500  text-white text-lg font-semibold rounded-3xl shadow-md translate-x-60  group-hover:translate-x-0 ease-linear duration-300"
                             >
                                 Buy Now

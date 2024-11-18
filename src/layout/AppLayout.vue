@@ -58,8 +58,8 @@ function isOutsideClicked(event) {
 }
 // onmount
 onMounted(async () => {
-    const email = sessionStorage.getItem('email');
-    const password = sessionStorage.getItem('password');
+    const email = sessionStorage.getItem('UserEmail');
+    const password = sessionStorage.getItem('UserPassword');
     const q = query(collection(db, 'users'), where('email', '==', email), where('password', '==', password));
 
     let flag = false;
@@ -72,7 +72,7 @@ onMounted(async () => {
         });
     }
     if (!flag) {
-        router.push('/auth/login');
+        router.push('/user/login');
     }
 });
 </script>

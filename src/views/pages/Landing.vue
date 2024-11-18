@@ -1,5 +1,4 @@
 <script setup>
-import Header from '@/components/shared/Header.vue';
 import HeroSection from '@/components/landing-page/hero/Section.vue';
 import ProductCategory from '@/components/landing-page/product-categories/Section.vue';
 import Product from '@/components/landing-page/product/Section.vue';
@@ -14,8 +13,7 @@ function smoothScroll(id) {
 
 <template>
     <div class="bg-surface-0 dark:bg-surface-900">
-        <div id="home" class="landing-wrapper overflow-hidden">
-            <Header />
+        <div id="home" class="overflow-hidden">
             <HeroSection />
             <ProductCategory />
             <Product />

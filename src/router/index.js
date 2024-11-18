@@ -1,3 +1,4 @@
+import ProductLayout from '@/layout/ProductLayout.vue';
 import AppLayout from '@/layout/AppLayout.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
@@ -117,9 +118,30 @@ const router = createRouter({
             ]
         },
         {
-            path: '/',
-            name: 'landing',
-            component: () => import('@/views/pages/Landing.vue')
+            path: '/product',
+            component: ProductLayout,
+            children: [
+                {
+                    path: '/',
+                    name: 'landing',
+                    component: () => import('@/views/pages/Landing.vue')
+                },
+                {
+                    path: '/product/details',
+                    name: 'ProductDetails',
+                    component: () => import('@/views/pages/ProductDetails.vue')
+                },
+                {
+                    path: '/allproduct',
+                    name: 'allproduct',
+                    component: () => import('@/views/pages/AllProducts.vue')
+                },
+                {
+                    path: '/add-to-cart',
+                    name: 'addtocart',
+                    component: () => import('@/views/pages/AddToCart.vue')
+                }
+            ]
         },
         {
             path: '/pages/notfound',
@@ -127,6 +149,16 @@ const router = createRouter({
             component: () => import('@/views/pages/NotFound.vue')
         },
 
+        {
+            path: '/user/login',
+            name: 'userlogin',
+            component: () => import('@/views/pages/user/UserLogin.vue')
+        },
+        {
+            path: '/user/registration',
+            name: 'userregistration',
+            component: () => import('@/views/pages/user/UserRegistration.vue')
+        },
         {
             path: '/auth/login',
             name: 'login',

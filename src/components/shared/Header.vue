@@ -1,14 +1,30 @@
 <script setup>
-import { store } from '@/composables/data';
+import { useState } from '@/composables/Store';
+import { onMounted, ref, watch } from 'vue';
+const { state } = useState();
+
+const validUser = ref(false);
 function smoothScroll(id) {
     document.body.click();
     document.querySelector(id).scrollIntoView({
         behavior: 'smooth'
     });
 }
+onMounted(() => {
+    const email = sessionStorage.getItem('UserEmail');
+    if (email) {
+        validUser.value = true;
+    }
+});
+const SignOut = () => {
+    sessionStorage.removeItem('UserEmail');
+};
+watch(JSON.stringify(sessionStorage.getItem('cartProduct')), () => {
+    console.log('product cahnge', JSON.stringify(sessionStorage.getItem('cartProduct')));
+});
 </script>
 <template>
-    <div class="py-6 px-6 mx-0 md:mx-12 lg:mx-20 lg:px-20 flex items-center justify-between relative lg:static">
+    <div class="py-6 px-6 bg-surface-0 dark:bg-surface-900 w-full flex items-center justify-between relative lg:static">
         <a class="flex items-center" href="#">
             <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-12 mr-2">
                 <path
@@ -38,33 +54,32 @@ function smoothScroll(id) {
         >
             <i class="pi pi-bars !text-2xl"></i>
         </Button>
-        <div class="items-center bg-surface-0 dark:bg-surface-900 grow justify-between hidden lg:flex absolute lg:static w-full left-0 top-full px-12 lg:px-0 z-20 rounded-border">
+        <div class="items-center grow justify-between hidden lg:flex absolute lg:static w-full left-0 top-full px-12 lg:px-0 z-20 rounded-border">
             <ul class="list-none p-0 m-0 flex lg:items-center select-none flex-col lg:flex-row cursor-pointer gap-8">
                 <li>
-                    <a @click="smoothScroll('#hero')" class="px-0 py-4 text-surface-900 dark:text-surface-0 font-medium text-xl">
+                    <RouterLink to="/" @click="smoothScroll('#hero')" class="px-0 py-4 text-surface-900 dark:text-surface-0 font-medium text-xl">
                         <span>Home</span>
-                    </a>
+                    </RouterLink>
                 </li>
                 <li>
-                    <a @click="smoothScroll('#features')" class="px-0 py-4 text-surface-900 dark:text-surface-0 font-medium text-xl">
-                        <span>Features</span>
-                    </a>
-                </li>
-                <li>
-                    <a @click="smoothScroll('#highlights')" class="px-0 py-4 text-surface-900 dark:text-surface-0 font-medium text-xl">
-                        <span>Highlights</span>
-                    </a>
-                </li>
-                <li>
-                    <a @click="smoothScroll('#pricing')" class="px-0 py-4 text-surface-900 dark:text-surface-0 font-medium text-xl">
-                        <span>Pricing</span>
-                    </a>
+                    <RouterLink to="/allproduct" @click="smoothScroll('#features')" class="px-0 py-4 text-surface-900 dark:text-surface-0 font-medium text-xl">
+                        <span>Product</span>
+                    </RouterLink>
                 </li>
             </ul>
-            <div class="flex border-t lg:border-t-0 border-surface py-4 lg:py-0 mt-4 lg:mt-0 gap-2">
-                <!-- <Button label="Login" text as="router-link" to="/auth/login" rounded></Button> -->
-                <button className="pi pi-heart-fill py-2 px-4 border  bg-pink-500   text-white text-lg font-semibold rounded-3xl shadow-md ">{{ (' ', store.addToCartProduct) }}</button>
-                <Button label="Register" to="/auth/login" rounded></Button>
+            <div class="flex gap-2">
+                <Button class="" :label="state.addToCart.length ? `  ${state.addToCart.length}` : `No Product`" icon="pi pi-heart" severity="help" rounded></Button>
+                <div class="flex border-t lg:border-t-0 border-surface py-4 lg:py-0 mt-4 lg:mt-0 gap-2" v-if="!validUser">
+                    <router-link to="/user/login">
+                        <Button label="Login" severity="warn" rounded></Button>
+                    </router-link>
+                    <router-link to="/user/registration">
+                        <Button label="Register" severity="contrast" rounded></Button>
+                    </router-link>
+                </div>
+                <div v-else>
+                    <Button label="Sign Out" severity="danger" to="/user/registration" rounded @click="SignOut"></Button>
+                </div>
             </div>
         </div>
     </div>
