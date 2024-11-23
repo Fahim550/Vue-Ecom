@@ -5,10 +5,20 @@ import { useRouter } from 'vue-router';
 const { state } = useState();
 const router = useRouter();
 const addToCart = (product) => {
-    state.addToCart = [...state.addToCart, product];
+    if (state.addToCart.length !== 0) {
+        console.log('product', product);
+        console.log('state.addToCart', state.addToCart);
+        const findDuplicateProduct = state.addToCart.find((pd) => pd.id === product.id);
+        console.log('findDuplicateProduct', findDuplicateProduct);
+        if (findDuplicateProduct === undefined) {
+            state.addToCart = [...state.addToCart, product];
+        }
+    } else {
+        state.addToCart = [...state.addToCart, product];
+        console.log('empty', state.addToCart);
+    }
     console.log('product addToCart', state.buyNow);
     router.push('/add-to-cart');
-    
 };
 </script>
 <template>

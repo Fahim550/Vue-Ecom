@@ -68,7 +68,9 @@ watch(JSON.stringify(sessionStorage.getItem('cartProduct')), () => {
                 </li>
             </ul>
             <div class="flex gap-2">
-                <Button class="" :label="state.addToCart.length ? `  ${state.addToCart.length}` : `No Product`" icon="pi pi-heart" severity="help" rounded></Button>
+                <router-link to="/add-to-cart">
+                    <Button class="" :label="state.addToCart.length ? `  ${state.addToCart.length}` : `No Product`" icon="pi pi-heart" severity="help" rounded></Button>
+                </router-link>
                 <div class="flex border-t lg:border-t-0 border-surface py-4 lg:py-0 mt-4 lg:mt-0 gap-2" v-if="!validUser">
                     <router-link to="/user/login">
                         <Button label="Login" severity="warn" rounded></Button>

@@ -6,18 +6,29 @@ const props = defineProps(['title', 'description', 'price', 'src', 'quantity', '
 const { state } = useState();
 const router = useRouter();
 const addToCart = (product) => {
-    state.addToCart = [...state.addToCart, product];
-    console.log('product addToCart', state.addToCart);
-    const sessionProduct = JSON.parse(sessionStorage.getItem('cartProduct'));
-    console.log('sessionProduct', sessionProduct);
-    const productArray = sessionProduct ? [...sessionProduct] : [];
-    if (sessionProduct && sessionProduct.length > 0) {
-        productArray.push(product);
-        sessionStorage.setItem('cartProduct', JSON.stringify(productArray));
+    if (state.addToCart.length !== 0) {
+        // console.log('product', product);
+        // console.log('state.addToCart', state.addToCart);
+        const findDuplicateProduct = state.addToCart.find((pd) => pd.id === product.id);
+        // console.log('findDuplicateProduct', findDuplicateProduct);
+        if (findDuplicateProduct === undefined) {
+            state.addToCart = [...state.addToCart, product];
+        }
     } else {
-        sessionStorage.setItem('cartProduct', JSON.stringify([product]));
-        console.log('add product', product);
+        state.addToCart = [...state.addToCart, product];
+        // console.log('empty', state.addToCart);
     }
+    // console.log('product addToCart', state.addToCart);
+    // const sessionProduct = JSON.parse(sessionStorage.getItem('cartProduct'));
+    // console.log('sessionProduct', sessionProduct);
+    // const productArray = sessionProduct ? [...sessionProduct] : [];
+    // if (sessionProduct && sessionProduct.length > 0) {
+    //     productArray.push(product);
+    //     sessionStorage.setItem('cartProduct', JSON.stringify(productArray));
+    // } else {
+    //     sessionStorage.setItem('cartProduct', JSON.stringify([product]));
+    //     console.log('add product', product);
+    // }
 };
 const buyNow = (product) => {
     state.buyNow = product;
