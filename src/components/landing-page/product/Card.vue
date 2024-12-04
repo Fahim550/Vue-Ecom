@@ -18,17 +18,8 @@ const addToCart = (product) => {
         state.addToCart = [...state.addToCart, product];
         // console.log('empty', state.addToCart);
     }
+    localStorage.setItem('cartItem', JSON.stringify(state.addToCart));
     // console.log('product addToCart', state.addToCart);
-    // const sessionProduct = JSON.parse(sessionStorage.getItem('cartProduct'));
-    // console.log('sessionProduct', sessionProduct);
-    // const productArray = sessionProduct ? [...sessionProduct] : [];
-    // if (sessionProduct && sessionProduct.length > 0) {
-    //     productArray.push(product);
-    //     sessionStorage.setItem('cartProduct', JSON.stringify(productArray));
-    // } else {
-    //     sessionStorage.setItem('cartProduct', JSON.stringify([product]));
-    //     console.log('add product', product);
-    // }
 };
 const buyNow = (product) => {
     state.buyNow = product;
@@ -53,7 +44,7 @@ const buyNow = (product) => {
                     <p className="text-[1rem] text-gray-700">{{ props.description }}</p>
 
                     <div className="mt-5 flex items-center justify-between w-full">
-                        <h3 className="text-[1.4rem] font-semibold flex items-center gap-[4px]">$13.90</h3>
+                        <h3 className="text-2xl font-bold flex items-center gap-[4px] text-green-500">{{ props.price }}</h3>
 
                         <div>
                             <button
