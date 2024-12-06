@@ -21,16 +21,19 @@ const login = async () => {
     const q = query(collection(db, 'users'), where('email', '==', state.email), where('password', '==', state.password));
 
     let flag = false;
+    let data = '';
     const querySnapshot = await getDocs(q);
     if (querySnapshot) {
         querySnapshot.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
             console.log(doc.id, ' => ', doc.data());
+            data = doc.data();
             flag = true;
         });
     }
     if (flag) {
         alert('there is user');
+        sessionStorage.setItem('UserData', JSON.stringify(data));
         sessionStorage.setItem('UserEmail', state.email);
         sessionStorage.setItem('UserPassword', state.password);
         console.log(state.email);

@@ -5,7 +5,9 @@ import { onMounted, reactive } from 'vue';
 const { state } = useState();
 
 const localState = reactive({
-    addToCart: []
+    addToCart: [],
+    nextClicked: false,
+    userData: {}
 });
 const handleIncrement = (item) => {
     const cartItem = localState.addToCart.find((cartItem) => cartItem.name === item.name);
@@ -53,8 +55,15 @@ const deleteCartItem = (item) => {
     }
 };
 console.log('addtocart', localState.addToCart);
+
 const placeOrder = () => {
     console.log('order', localState.addToCart);
+    localState.nextClicked = true;
+    const userData = JSON.parse(sessionStorage.getItem('UserData'));
+    console.log('userData', userData);
+    if (userData) {
+        localState.userData = userData;
+    }
 };
 
 onMounted(() => {
@@ -63,7 +72,7 @@ onMounted(() => {
 </script>
 <template list="state.addToCart">
     <div class="flex flex-col bg-gray-100 shadow-md py-2">
-        <div v-for="(item, index) in localState.addToCart" :key="index" class="w-10/12 bg-gray-200 mx-auto border-2 border-white p-2">
+        <div v-for="(item, index) in localState.addToCart" :key="index" class="col-span-1 w-10/12 bg-gray-200 mx-auto border-2 border-white p-2">
             <div class="flex flex-col sm:flex-row sm:items-center px-6 gap-4" :class="{ 'border-t border-surface': index !== 0 }">
                 <div class="md:w-40 relative">
                     <img class="block xl:block mx-auto rounded w-full" :src="`${item.url}`" :alt="item.name" />
@@ -82,7 +91,14 @@ onMounted(() => {
                             <button class="bg-gray-300 p-2.5 rounded-l-md text-gray-700 text-[1.1rem]" @click="handleDecrement(item)">
                                 <span class="font-bold text-xl">-</span>
                             </button>
-                            <input type="number" :value="item.quantity" min="1" class="w-[70px] py-2.5 outline-none focus:ring-0 border-none text-center text-[1.1rem]" @input="(event) => handleInputValueChange(item, event)" />
+                            <input
+                                type="number"
+                                :value="item.quantity"
+                                min="1"
+                                class="w-[70px] py-2.5 outline-none focus:ring-0 border-none text-center text-[1.1rem]"
+                                v-if="item.quantity == 0 ? (item.quantity = 1) : item.quantity"
+                                @input="(event) => handleInputValueChange(item, event)"
+                            />
                             <button class="bg-gray-300 p-2.5 rounded-r-md text-gray-700 text-[1.1rem]" @click="handleIncrement(item)">
                                 <span>+</span>
                             </button>
@@ -98,4 +114,5 @@ onMounted(() => {
             <Button icon="pi pi-check" label="Order" @click="() => placeOrder()" class="justify-center whitespace-nowrap"></Button>
         </div>
     </div>
+    <div class="col-span-1" v-if="localState.nextClicked">{{ localState.userData }}</div>
 </template>
