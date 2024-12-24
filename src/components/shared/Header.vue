@@ -11,13 +11,13 @@ function smoothScroll(id) {
     });
 }
 onMounted(() => {
-    const email = sessionStorage.getItem('UserEmail');
+    const email = sessionStorage.getItem('UserData');
     if (email) {
         validUser.value = true;
     }
 });
 const SignOut = () => {
-    sessionStorage.removeItem('UserEmail');
+    sessionStorage.removeItem('UserData');
 };
 watch(JSON.stringify(sessionStorage.getItem('cartProduct')), () => {
     console.log('product cahnge', JSON.stringify(sessionStorage.getItem('cartProduct')));

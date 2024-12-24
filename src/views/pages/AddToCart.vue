@@ -1,6 +1,8 @@
 <script setup>
 import { useState } from '@/composables/Store';
-import { onMounted, reactive } from 'vue';
+
+import InputText from 'primevue/inputtext';
+import { onMounted, reactive, ref } from 'vue';
 
 const { state } = useState();
 
@@ -9,6 +11,8 @@ const localState = reactive({
     nextClicked: false,
     userData: {}
 });
+const picked = ref(false);
+
 const handleIncrement = (item) => {
     const cartItem = localState.addToCart.find((cartItem) => cartItem.name === item.name);
     localStorage.setItem('cartItems', JSON.stringify(item));
@@ -61,8 +65,10 @@ const placeOrder = () => {
     localState.nextClicked = true;
     const userData = JSON.parse(sessionStorage.getItem('UserData'));
     console.log('userData', userData);
-    if (userData) {
+    if (userData.email) {
         localState.userData = userData;
+    } else {
+        alert('please logged in otherwise you can not order ');
     }
 };
 
@@ -110,9 +116,39 @@ onMounted(() => {
                 </div>
             </div>
         </div>
-        <div class="flex flex-row justify-end gap-2 mr-6 m-2">
-            <Button icon="pi pi-check" label="Order" @click="() => placeOrder()" class="justify-center whitespace-nowrap"></Button>
+        <div class="flex justify-center gap-2 mr-6 m-2">
+            <section class="col-span-1" v-if="localState.nextClicked">
+                <p class="my-8 text-3xl font-bold">Shipping details</p>
+                <section class="flex">
+                    <section class="mx-4">
+                        <label for="name" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Name</label>
+                        <InputText id="name" type="text" placeholder="name" class="w-full mb-8" :value="localState.userData.name" readonly />
+                    </section>
+                    <section class="mx-4">
+                        <label for="email" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email</label>
+                        <InputText id="name" type="email" placeholder="email" class="w-full mb-8" :value="localState.userData.email" readonly />
+                    </section>
+                    <section class="mx-4">
+                        <label for="phone" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Phone</label>
+                        <InputText id="phone" type="phone" placeholder="phone" class="w-full mb-8" :value="localState.userData.phone" />
+                    </section>
+                    <section class="mx-4">
+                        <label for="address" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Address:</label>
+                        <InputText id="address" type="address" placeholder="address" class="w-full mb-8" :value="localState.userData.email" />
+                    </section>
+                </section>
+                <section>
+                    <p class="my-8 text-3xl font-bold">Delivery Option</p>
+                    <input type="radio" id="Cash" value="cash" v-model="picked" />
+                    <label for="Cash" class="mx-4">Cash On Delivery</label>
+                    <input type="radio" id="payment" value="payment" v-model="picked" />
+                    <label for="payment" class="mx-4">Payment Getway</label>
+                </section>
+            </section>
         </div>
+        <section v-if="localState?.addToCart?.length > 0" class="flex justify-end">
+            <Button v-if="!localState.nextClicked" icon="pi pi-check" label="next" @click="() => placeOrder()" class="w-fit mr-2 whitespace-nowrap"></Button>
+            <Button v-if="picked" icon="pi pi-check" label="Place Order" class="w-fit mr-2 whitespace-nowrap"></Button>
+        </section>
     </div>
-    <div class="col-span-1" v-if="localState.nextClicked">{{ localState.userData }}</div>
 </template>
