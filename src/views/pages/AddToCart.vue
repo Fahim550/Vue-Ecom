@@ -1,11 +1,15 @@
 <script setup>
 import { useState } from '@/composables/Store';
+import { db } from '@/database/FirebaseConfig';
+
+import { addDoc, collection } from 'firebase/firestore';
 
 import InputText from 'primevue/inputtext';
 import { onMounted, reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const { state } = useState();
-
+const router = useRouter();
 const localState = reactive({
     addToCart: [],
     nextClicked: false,
@@ -60,7 +64,7 @@ const deleteCartItem = (item) => {
 };
 console.log('addtocart', localState.addToCart);
 
-const placeOrder = () => {
+const next = () => {
     console.log('order', localState.addToCart);
     localState.nextClicked = true;
     const userData = JSON.parse(sessionStorage.getItem('UserData'));
@@ -71,7 +75,27 @@ const placeOrder = () => {
         alert('please logged in otherwise you can not order ');
     }
 };
-
+const placeOrder = async () => {
+    const orderObject = {
+        name: localState.userData?.name,
+        email: localState.userData?.email,
+        phone: localState.userData?.phone,
+        address: localState.userData?.address,
+        orderProduct: state.addToCart,
+        payment: false,
+        paymentId: ''
+    };
+    console.log('orderObject', orderObject);
+    try {
+        const docRef = await addDoc(collection(db, 'order'), { ...orderObject });
+        console.log('order add successfully', docRef);
+        state.addToCart = [];
+        localState.addToCart = [];
+        router.push('/');
+    } catch (error) {
+        alert('error occurred while creating account');
+    }
+};
 onMounted(() => {
     localState.addToCart = [...state.addToCart];
 });
@@ -147,8 +171,8 @@ onMounted(() => {
             </section>
         </div>
         <section v-if="localState?.addToCart?.length > 0" class="flex justify-end">
-            <Button v-if="!localState.nextClicked" icon="pi pi-check" label="next" @click="() => placeOrder()" class="w-fit mr-2 whitespace-nowrap"></Button>
-            <Button v-if="picked" icon="pi pi-check" label="Place Order" class="w-fit mr-2 whitespace-nowrap"></Button>
+            <Button v-if="!localState.nextClicked" icon="pi pi-check" label="next" @click="() => next()" class="w-fit mr-2 whitespace-nowrap"></Button>
+            <Button v-if="picked" icon="pi pi-check" label="Place Order" @click="() => placeOrder()" class="w-fit mr-2 whitespace-nowrap"></Button>
         </section>
     </div>
 </template>

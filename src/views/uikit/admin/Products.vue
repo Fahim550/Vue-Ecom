@@ -95,7 +95,7 @@ onMounted(async () => {
 <template>
     <Fluid>
         <div class="flex flex-col md:flex-row gap-8">
-            <div class="md:w-full card flex gap-8 ">
+            <div class="md:w-full card flex gap-8">
                 <div class="flex flex-col gap-4 w-1/2">
                     <div v-if="state.productData.length > 0">
                         <p class="text-green-500 font-bold">Your product list in your inventory</p>
@@ -121,11 +121,11 @@ onMounted(async () => {
                                             "
                                         />
 
-                                        <Dialog v-model:visible="visible" modal header="Edit Profile" :style="{ width: '25rem' }">
-                                            <span class="text-surface-500 dark:text-surface-400 block mb-8">Update your information.</span>
+                                        <Dialog v-model:visible="visible" modal header="Update Product Details" :style="{ width: '25rem' }">
+                                            <span class="text-surface-500 dark:text-surface-400 block mb-8">Update Product Information.</span>
                                             <div class="flex items-center gap-4 mb-4">
-                                                <label for="username" class="font-semibold w-24">Username</label>
-                                                <InputText id="username" class="flex-auto" autocomplete="off" v-model="state.updateData.name" />
+                                                <label for="title" class="font-semibold w-24">Title</label>
+                                                <InputText id="title" class="flex-auto" autocomplete="off" v-model="state.updateData.name" />
                                             </div>
                                             <div class="flex items-center gap-4 mb-4">
                                                 <label for="price" class="font-semibold w-24">Price</label>
@@ -136,8 +136,8 @@ onMounted(async () => {
                                                 <InputText id="imageurl" class="flex-auto" autocomplete="off" v-model="state.updateData.url" />
                                             </div>
                                             <div class="flex items-center gap-4 mb-8">
-                                                <label for="quantity" class="font-semibold w-24">Quantity</label>
-                                                <InputText id="quantity" class="flex-auto" autocomplete="off" v-model="state.updateData.quantity" />
+                                                <label for="quantity" class="font-semibold w-24">Total Quantity</label>
+                                                <InputText id="quantity" class="flex-auto" autocomplete="off" min="1" v-model="state.updateData.quantity" />
                                             </div>
                                             <div class="flex items-center gap-4 mb-8">
                                                 <label for="description" class="font-semibold w-24">Description</label>
@@ -160,26 +160,26 @@ onMounted(async () => {
                             </Card>
                         </div>
                     </div>
-                    <div v-else="">
+                    <div v-else>
                         <p class="text-red-500">You have no product in your inventory</p>
                     </div>
                 </div>
-                <div class="flex flex-col gap-4 w-1/2 ">
+                <div class="flex flex-col gap-4 w-1/2">
                     <div class="flex flex-col gap-2">
-                        <label for="name1">Name</label>
+                        <label for="name1">Title</label>
                         <InputText id="name1" type="text" v-model="state.name0" />
                     </div>
                     <div class="flex flex-col gap-2">
                         <label for="price">Price</label>
-                        <InputText id="price" type="number" min="0" v-model="state.price" />
+                        <InputText id="price" type="number" min="1" v-model="state.price" />
                     </div>
                     <div class="flex flex-col gap-2">
                         <label for="image">Image Url</label>
                         <InputText id="image" type="url" v-model="state.image" />
                     </div>
                     <div class="flex flex-col gap-2">
-                        <label for="quantity">Quantity</label>
-                        <InputText id="quantity" type="number" min="0" v-model="state.quantity" />
+                        <label for="quantity">Total Quantity</label>
+                        <InputText id="quantity" type="number" min="1" v-model="state.quantity" />
                     </div>
                     <div class="flex flex-col gap-2">
                         <label for="description">Description</label>
