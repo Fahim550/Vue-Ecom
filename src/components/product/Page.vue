@@ -22,7 +22,7 @@ onMounted(async () => {
 });
 </script>
 <template>
-    <div id="features" class="py-6 px-6 lg:px-20 mt-8 mx-0 lg:mx-20">
+    <div id="features" class="py-6 px-4 lg:px-20 mt-8 mx-0 lg:mx-20">
         <div class="grid grid-cols-12 gap-4 justify-center">
             <div class="col-span-12 text-center mt-20 mb-6">
                 <div class="text-surface-900 dark:text-surface-0 font-normal mb-2 text-4xl">Trending Now</div>

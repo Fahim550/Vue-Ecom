@@ -12,7 +12,8 @@ const state = reactive({
     name: '',
     price: 0,
     image: '',
-    quantity: 0,
+    totalQuantity: 0,
+
     description: '',
     productData: [],
     currentId: '',
@@ -20,7 +21,7 @@ const state = reactive({
         name: '',
         price: 0,
         url: '',
-        quantity: 0,
+        totalQuantity: 0,
         description: '',
         productData: []
     }
@@ -32,12 +33,13 @@ const addProducts = async () => {
         name: state.name,
         price: state.price,
         url: state.image,
-        quantity: state.quantity,
-        description: state.description
+        totalQuantity: state.totalQuantity,
+        description: state.description,
+        quantity: 1,
     });
     console.log('addProducts', docRef.id);
 
-    (state.name = ''), (state.price = 0), (state.image = ''), (state.quantity = 0), (state.description = '');
+    (state.name = ''), (state.price = 0), (state.image = ''), (state.totalQuantity = 1), (state.description = '');
 
     const querySnapshot = await getDocs(collection(db, 'products'));
     const productArray = [];
@@ -62,7 +64,7 @@ const editProducts = (product) => {
     (state.updateData.name = product.name),
         (state.updateData.price = product.price),
         (state.updateData.url = product.url),
-        (state.updateData.quantity = product.quantity),
+        (state.updateData.totalQuantity = product.totalQuantity),
         (state.updateData.description = product.description),
         (state.currentId = product.id);
 };
@@ -107,7 +109,7 @@ onMounted(async () => {
                                 <template #title>{{ product?.name }}</template>
                                 <template #content>
                                     <p class="m-0">{{ product?.description }}</p>
-                                    <p class="m-0">Price : {{ product?.price }} tk - Quantity : {{ product?.quantity }}</p>
+                                    <p class="m-0">Price : {{ product?.price }} tk - Quantity : {{ product?.totalQuantity }}</p>
                                 </template>
                                 <template #footer>
                                     <div class="flex gap-4 mt-1">
@@ -137,7 +139,7 @@ onMounted(async () => {
                                             </div>
                                             <div class="flex items-center gap-4 mb-8">
                                                 <label for="quantity" class="font-semibold w-24">Total Quantity</label>
-                                                <InputText id="quantity" class="flex-auto" autocomplete="off" min="1" v-model="state.updateData.quantity" />
+                                                <InputText id="quantity" class="flex-auto" autocomplete="off" min="1" v-model="state.updateData.totalQuantity" />
                                             </div>
                                             <div class="flex items-center gap-4 mb-8">
                                                 <label for="description" class="font-semibold w-24">Description</label>
@@ -167,7 +169,7 @@ onMounted(async () => {
                 <div class="flex flex-col gap-4 w-1/2">
                     <div class="flex flex-col gap-2">
                         <label for="name1">Title</label>
-                        <InputText id="name1" type="text" v-model="state.name0" />
+                        <InputText id="name1" type="text" v-model="state.name" />
                     </div>
                     <div class="flex flex-col gap-2">
                         <label for="price">Price</label>
@@ -179,7 +181,7 @@ onMounted(async () => {
                     </div>
                     <div class="flex flex-col gap-2">
                         <label for="quantity">Total Quantity</label>
-                        <InputText id="quantity" type="number" min="1" v-model="state.quantity" />
+                        <InputText id="quantity" type="number" min="1" v-model="state.totalQuantity" />
                     </div>
                     <div class="flex flex-col gap-2">
                         <label for="description">Description</label>

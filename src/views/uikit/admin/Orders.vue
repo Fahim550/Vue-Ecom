@@ -37,37 +37,17 @@ onMounted(async () => {
                             <div class="text-lg font-medium mt-2">Phone:{{ order?.phone }}</div>
                         </section>
                     </div>
-                    <div class="flex flex-col md:flex-col justify-between items-start gap-2">
-                        <section v-for="product in order?.orderProduct" :key="product">
-                            <div class="text-lg font-medium mt-2">Name:{{ product?.name }}</div>
-                            <div class="text-lg font-medium mt-2">Price:{{ product?.price }}</div>
-                            <div class="text-lg font-medium mt-2">Quantity:{{ product?.quantity }}</div>
+                    <div class="justify-center items-start gap-2">
+                        <section v-for="product in order?.orderProduct" :key="product" class="grid-cols-6">
+                            <div class="col-span-4">
+                                <div class="text-lg font-medium mt-2">Name:{{ product?.name }}</div>
+                                <div class="text-lg font-medium mt-2">Price:{{ product?.price }}</div>
+                                <div class="text-lg font-medium mt-2">Quantity:{{ product?.quantity }}</div>
+                            </div>
+                            <div class="md:w-40 relative col-span-2">
+                                <img class="block xl:block mx-auto rounded w-full" :src="`${product.url}`" :alt="order.name" />
+                            </div>
                         </section>
-                        <!-- <div class="md:w-40 relative">
-                            <img class="block xl:block mx-auto rounded w-full" :src="`${product.url}`" :alt="order.name" />
-                        </div> -->
-                    </div>
-                    <div class="flex flex-col md:items-end gap-2">
-                        <h1 class="flex mx-auto text-xl font-bold">Quantity ({{ order.totalQuantity }})</h1>
-                        <div class="flex items-center mx-auto border border-gray-200 rounded-md">
-                            <button class="bg-gray-300 p-2.5 rounded-l-md text-gray-700 text-[1.1rem]" @click="handleDecrement(order)">
-                                <span class="font-bold text-xl">-</span>
-                            </button>
-                            <input
-                                type="number"
-                                :value="order.quantity"
-                                min="1"
-                                class="w-[70px] py-2.5 outline-none focus:ring-0 border-none text-center text-[1.1rem]"
-                                v-if="order.quantity == 0 ? (order.quantity = 1) : order.quantity"
-                                @input="(event) => handleInputValueChange(order, event)"
-                            />
-                            <button class="bg-gray-300 p-2.5 rounded-r-md text-gray-700 text-[1.1rem]" @click="handleIncrement(order)">
-                                <span>+</span>
-                            </button>
-                        </div>
-                        <div class="flex flex-row-reverse md:flex-row gap-2">
-                            <Button icon="pi pi-trash" label="Delete" severity="danger" @click="() => deleteCartItem(order)" class="flex-auto md:flex-initial whitespace-nowrap"></Button>
-                        </div>
                     </div>
                 </div>
             </div>
