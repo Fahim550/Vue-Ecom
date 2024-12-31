@@ -1,19 +1,28 @@
 <script setup>
 import { useState } from '@/composables/Store';
+import WishList from '@/views/pages/WishList.vue';
 import { Dialog, DialogPanel, Disclosure, DisclosureButton, DisclosurePanel, Popover, PopoverButton, PopoverGroup, PopoverPanel } from '@headlessui/vue';
 import { Bars3Icon, ChevronDownIcon } from '@heroicons/vue/20/solid';
 import { ArrowPathIcon, ChartPieIcon, CursorArrowRaysIcon, FingerPrintIcon, PhoneIcon, PlayCircleIcon, SquaresPlusIcon } from '@heroicons/vue/24/outline';
 import { onMounted, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 const { state } = useState();
-
+const router = useRouter();
 const validUser = ref(false);
 function smoothScroll(id) {
     document.body.click();
-    document.querySelector(id).scrollIntoView({
-        behavior: 'smooth'
-    });
+    const target = document.querySelector(id);
+    if (target) {
+        target.scrollIntoView({
+            behavior: 'smooth'
+        });
+    } else {
+        console.warn(`Element with ID ${id} not found`);
+    }
 }
 const mobileMenuOpen = ref(false);
+const wishListVisible = ref(false);
+
 const products = [
     { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
     { name: 'Engagement', description: 'Speak directly to your customers', href: '#', icon: CursorArrowRaysIcon },
@@ -25,21 +34,44 @@ const callsToAction = [
     { name: 'Watch demo', href: '#', icon: PlayCircleIcon },
     { name: 'Contact sales', href: '#', icon: PhoneIcon }
 ];
+
+const handleWishList = (event) => {
+    event.preventDefault();
+    try {
+        console.log('Toggling wishlist visibility...');
+        wishListVisible.value = !wishListVisible.value;
+        console.log('WishList visibility:', wishListVisible.value);
+    } catch (error) {
+        console.error('Error in handleWishList:', error);
+    }
+};
+const handleWishListClose = () => {
+    wishListVisible.value = false;
+};
+const updateVisibility = (newVisibility) => {
+    console.log('Visibility toggled:', newVisibility);
+    wishListVisible.value = newVisibility;
+};
+const SignOut = () => {
+    sessionStorage.removeItem('UserData');
+    try {
+        router.push('/user/registration');
+    } catch (error) {
+        console.error('Failed to navigate:', error);
+    }
+};
 onMounted(() => {
     const email = sessionStorage.getItem('UserData');
     if (email) {
         validUser.value = true;
     }
 });
-const SignOut = () => {
-    sessionStorage.removeItem('UserData');
-};
 watch(JSON.stringify(sessionStorage.getItem('cartProduct')), () => {
     console.log('product cahnge', JSON.stringify(sessionStorage.getItem('cartProduct')));
 });
 </script>
 <template>
-    <header>
+    <header class="mb-[80px]">
         <nav class="py-6 px-6 bg-surface-0 dark:bg-surface-900 w-full flex items-center justify-between fixed top-0 z-50 h-[80px]" aria-label="Global">
             <RouterLink to="/" class="flex items-center" href="#">
                 <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-12 mr-2">
@@ -105,13 +137,19 @@ watch(JSON.stringify(sessionStorage.getItem('cartProduct')), () => {
             </div>
             <!-- nav right -->
             <div class="flex gap-4">
-                <router-link to="/add-to-cart" class="flex relative group">
-                    <i class="pi pi-heart hover:text-green-400 relative p-3" style="font-size: 2rem" :label="state.addToCart.length ? `  ${state.addToCart.length}` : '0'">
+                <router-link @click="handleWishList" to="/" class="flex relative group">
+                    <i class="pi pi-heart hover:text-green-400 relative p-3" style="font-size: 2rem" :label="state?.wishList?.length ? `  ${state?.wishList?.length}` : '0'">
                         <p class="absolute top-0 right-0 bg-green-400 text-white rounded-full text-sm w-6 h-6 flex items-center justify-center font-bold">
-                            {{ state.addToCart.length }}
+                            {{ state?.wishList?.length ?? 0 }}
                         </p>
                     </i>
                     <span class="absolute bottom-full mb-[-7px] left-1/2 transform -translate-x-1/2 bg-green-400 text-white text-sm rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity"> Wishlist</span>
+                    <WishList
+                        v-model:visible="wishListVisible"
+                        :wishList="state?.wishList"
+                        @click="handleWishListClose, updateVisibility"
+                        :class="[wishListVisible ? 'visible' : 'invisible', 'w-full h-screen fixed bg-[rgb(0,0,0,0.2)] top-0 left-0 z-50 transition-all duration-300']"
+                    />
                 </router-link>
                 <router-link to="/add-to-cart" class="flex relative group">
                     <i class="pi pi-shopping-bag hover:text-green-400 relative p-3" style="font-size: 2rem" :label="state.addToCart.length ? `  ${state.addToCart.length}` : '0'">
@@ -123,7 +161,7 @@ watch(JSON.stringify(sessionStorage.getItem('cartProduct')), () => {
                     <span class="absolute bottom-full mb-[-7px] left-1/2 transform -translate-x-1/2 bg-green-400 text-white text-sm rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity">Cart</span>
                 </router-link>
                 <router-link to="" class="flex relative group">
-                    <i class="pi pi-user hover:text-green-400 relative p-3 hidden sm:block" style="font-size: 2em"> </i>
+                    <i v-if="validUser" class="pi pi-user hover:text-green-400 relative p-3 hidden sm:block" style="font-size: 2em"> </i>
                     <span class="absolute bottom-full mb-[-7px] left-1/2 transform -translate-x-1/2 bg-green-400 text-white text-sm rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity"> Profile</span>
                 </router-link>
 
@@ -138,7 +176,7 @@ watch(JSON.stringify(sessionStorage.getItem('cartProduct')), () => {
                     </router-link>
                 </div>
                 <div v-else>
-                    <i class="pi pi-sign-out font-bold text-red-500 pt-3 hidden sm:block" style="font-size: 2rem" to="/user/registration" rounded @click="SignOut"></i>
+                    <i class="pi pi-sign-out font-bold text-red-500 pt-3 hidden sm:block" style="font-size: 2rem" rounded @click="SignOut"></i>
                 </div>
                 <div class="flex lg:hidden">
                     <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700" @click="mobileMenuOpen = true">

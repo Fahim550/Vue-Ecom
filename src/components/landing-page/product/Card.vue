@@ -6,24 +6,51 @@ import { useRouter } from 'vue-router';
 const props = defineProps(['title', 'description', 'price', 'src', 'quantity', 'id', 'product']);
 const { state } = useState();
 const wishlistVisible = ref(false);
-const compareVisible = ref(false);
 const quickViewVisible = ref(false);
 const productCardHover = ref(false);
 const router = useRouter();
 const addToCart = (product) => {
-    if (state.addToCart.length !== 0) {
-        // console.log('product', product);
-        // console.log('state.addToCart', state.addToCart);
-        const findDuplicateProduct = state.addToCart.find((pd) => pd.id === product.id);
-        // console.log('findDuplicateProduct', findDuplicateProduct);
-        if (findDuplicateProduct === undefined) {
+    const email = sessionStorage.getItem('UserData');
+    if (email) {
+        console.log('state', state);
+        if (state?.addToCart.length !== 0) {
+            // console.log('product', product);
+            // console.log('state.addToCart', state.addToCart);
+            const findDuplicateProduct = state.addToCart.find((pd) => pd.id === product.id);
+            // console.log('findDuplicateProduct', findDuplicateProduct);
+            if (findDuplicateProduct === undefined) {
+                state.addToCart = [...state.addToCart, product];
+            }
+        } else {
             state.addToCart = [...state.addToCart, product];
+            // console.log('empty', state.addToCart);
         }
     } else {
-        state.addToCart = [...state.addToCart, product];
-        // console.log('empty', state.addToCart);
+        alert('login first');
     }
     localStorage.setItem('cartItem', JSON.stringify(state.addToCart));
+    // console.log('product addToCart', state.addToCart);
+};
+const wishList = (product) => {
+    const email = sessionStorage.getItem('UserData');
+    if (email) {
+        console.log('state', state);
+        if (state?.wishList.length !== 0) {
+            // console.log('product', product);
+            // console.log('state.addToCart', state.addToCart);
+            const findDuplicateProduct = state.wishList.find((pd) => pd.id === product.id);
+            // console.log('findDuplicateProduct', findDuplicateProduct);
+            if (findDuplicateProduct === undefined) {
+                state.wishList = [...state.wishList, product];
+            }
+        } else {
+            state.wishList = [...state.wishList, product];
+            // console.log('empty', state.addToCart);
+        }
+    } else {
+        alert('login first');
+    }
+    localStorage.setItem('cartItem', JSON.stringify(state.wishList));
     // console.log('product addToCart', state.addToCart);
 };
 
@@ -41,7 +68,7 @@ const buyNow = (product) => {
 </script>
 <template>
     <div class="col-span-8 md:col-span-4 lg:col-span-3 p-0 lg:pr-8 lg:pb-8 mt-6 lg:mt-0 justify-items-center h-full group">
-        <div class="w-full group border border-gray-300 rounded-md p-5" style="height: 380px; padding: 2px; border-radius: 10px">
+        <div class="w-full group border border-gray-300 rounded-md p-5" style="height: 350px; padding: 2px; border-radius: 10px">
             <!-- image & action buttons -->
             <div @mouseover="productCardHover = true" @mouseout="productCardHover = false" class="w-full relative cursor-pointer overflow-hidden">
                 <img :alt="'product/image'" :src="props?.src" class="w-full max-h-64 transition ease-linear duration-200 hover:scale-105" />
@@ -49,7 +76,12 @@ const buyNow = (product) => {
                 <div class="absolute bottom-0 left-0 w-full">
                     <!-- quick action buttons -->
                     <div class="flex items-center gap-[15px] justify-center">
-                        <div @mouseover="wishlistVisible = true" @mouseout="wishlistVisible = false" class="relative w-max group-hover:translate-y-0 translate-y-[50px] transition-all opacity-0 group-hover:opacity-100 duration-300">
+                        <div
+                            @mouseover="wishlistVisible = true"
+                            @mouseout="wishlistVisible = false"
+                            @click="wishList(props.product)"
+                            class="relative w-max group-hover:translate-y-0 translate-y-[50px] transition-all opacity-0 group-hover:opacity-100 duration-300"
+                        >
                             <i class="pi pi-heart rounded-full bg-white p-2 hover:bg-[#0FABCA] hover:text-white transition-all duration-200 cursor-pointer"></i>
 
                             <!-- tooltip -->
@@ -82,6 +114,7 @@ const buyNow = (product) => {
                     <div class="w-full flex mt-6 items-center opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 translate-y-[60px] bg-[rgb(0,0,0,0.5)]">
                         <button
                             className="pi pi-cart-arrow-down py-[13px] overflow-hidden before:w-full before:h-full before:bg-[#0FABCA] before:absolute before:top-0 z-0 before:z-[-1] before:translate-x-[-240px] hover:before:translate-x-0 before:transition-all before:duration-300 before:left-0 relative flex items-center justify-center grow text-white"
+                            @click="addToCart(props.product)"
                         >
                             <i class="pi pi-shopping-bag"></i>
                         </button>
@@ -95,7 +128,7 @@ const buyNow = (product) => {
                 <div class="flex items-center justify-center gap-[10px] mt-2">
                     <div class="flex items-center space-x-1">
                         <div v-for="starRating in 5" :key="starRating">
-                            <i class="pi pi-star-fill" :class="starRating <= rating ? 'text-yellow-400' : 'text-gray-300'" size="16" @click="setRating(starRating)" style="color: chocolate"></i>
+                            <i class="pi pi-star-fill" :class="starRating <= rating ? 'text-yellow-400' : 'text-gray-300'" size="16" style="color: chocolate"></i>
                         </div>
                     </div>
                     <span class="text-[0.9rem] text-gray-500">{{ product?.totalQuantity }}</span>
