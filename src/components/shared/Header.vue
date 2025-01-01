@@ -3,7 +3,6 @@ import { useState } from '@/composables/Store';
 import WishList from '@/views/pages/WishList.vue';
 import { Dialog, DialogPanel, Disclosure, DisclosureButton, DisclosurePanel, Popover, PopoverButton, PopoverGroup, PopoverPanel } from '@headlessui/vue';
 import { Bars3Icon, ChevronDownIcon } from '@heroicons/vue/20/solid';
-import { ArrowPathIcon, ChartPieIcon, CursorArrowRaysIcon, FingerPrintIcon, PhoneIcon, PlayCircleIcon, SquaresPlusIcon } from '@heroicons/vue/24/outline';
 import { onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 const { state } = useState();
@@ -23,18 +22,6 @@ function smoothScroll(id) {
 const mobileMenuOpen = ref(false);
 const wishListVisible = ref(false);
 
-const products = [
-    { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
-    { name: 'Engagement', description: 'Speak directly to your customers', href: '#', icon: CursorArrowRaysIcon },
-    { name: 'Security', description: 'Your customers’ data will be safe and secure', href: '#', icon: FingerPrintIcon },
-    { name: 'Integrations', description: 'Connect with third-party tools', href: '#', icon: SquaresPlusIcon },
-    { name: 'Automations', description: 'Build strategic funnels that will convert', href: '#', icon: ArrowPathIcon }
-];
-const callsToAction = [
-    { name: 'Watch demo', href: '#', icon: PlayCircleIcon },
-    { name: 'Contact sales', href: '#', icon: PhoneIcon }
-];
-
 const handleWishList = (event) => {
     event.preventDefault();
     try {
@@ -46,12 +33,12 @@ const handleWishList = (event) => {
     }
 };
 const handleWishListClose = () => {
-    wishListVisible.value = false;
+    wishListVisible.value = !wishListVisible.value;
 };
-const updateVisibility = (newVisibility) => {
-    console.log('Visibility toggled:', newVisibility);
-    wishListVisible.value = newVisibility;
-};
+// const updateVisibility = (newVisibility) => {
+//     console.log('Visibility toggled:', newVisibility);
+//     wishListVisible.value = newVisibility;
+// };
 const SignOut = () => {
     sessionStorage.removeItem('UserData');
     try {
@@ -147,7 +134,7 @@ watch(JSON.stringify(sessionStorage.getItem('cartProduct')), () => {
                     <WishList
                         v-model:visible="wishListVisible"
                         :wishList="state?.wishList"
-                        @click="handleWishListClose, updateVisibility"
+                        @click="handleWishListClose"
                         :class="[wishListVisible ? 'visible' : 'invisible', 'w-full h-screen fixed bg-[rgb(0,0,0,0.2)] top-0 left-0 z-50 transition-all duration-300']"
                     />
                 </router-link>

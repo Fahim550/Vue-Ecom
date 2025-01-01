@@ -1,5 +1,6 @@
 <script setup>
 import { useState } from '@/composables/Store';
+import ProductDetails from '@/views/pages/ProductDetails.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -9,6 +10,7 @@ const wishlistVisible = ref(false);
 const quickViewVisible = ref(false);
 const productCardHover = ref(false);
 const router = useRouter();
+const productDetailsVisible = ref(false);
 const addToCart = (product) => {
     const email = sessionStorage.getItem('UserData');
     if (email) {
@@ -53,7 +55,20 @@ const wishList = (product) => {
     localStorage.setItem('cartItem', JSON.stringify(state.wishList));
     // console.log('product addToCart', state.addToCart);
 };
+const quickView = () => {
+    event.preventDefault();
+    try {
+        console.log('Toggling wishlist visibility...');
+        productDetailsVisible.value = !productDetailsVisible.value;
+        console.log('WishList visibility:', productDetailsVisible.value);
+    } catch (error) {
+        console.error('Error in handleWishList:', error);
+    }
 
+};
+const productDetailsClose = () => {
+    productDetailsVisible.value = !productDetailsVisible.value;
+};
 const truncateText = (text) => {
     if (text.length > 50) {
         return text.substring(0, 50) + '...';
@@ -95,9 +110,19 @@ const buyNow = (product) => {
                             </p>
                         </div>
 
-                        <div @mouseover="quickViewVisible = true" @mouseout="quickViewVisible = false" class="relative w-max group-hover:translate-y-0 transition-all duration-700 opacity-0 group-hover:opacity-100 translate-y-[110px]">
+                        <div
+                            @mouseover="quickViewVisible = true"
+                            @mouseout="quickViewVisible = false"
+                            @click="quickView(props.product)"
+                            class="relative w-max group-hover:translate-y-0 transition-all duration-700 opacity-0 group-hover:opacity-100 translate-y-[110px]"
+                        >
                             <i class="pi pi-eye rounded-full bg-white p-2 hover:bg-[#0FABCA] hover:text-white transition-all duration-200 cursor-pointer"> </i>
-
+                            <ProductDetails
+                                v-model:visible="productDetailsVisible"
+                                :productDetails="state"
+                                @click="productDetailsClose"
+                                :class="[productDetailsVisible ? 'visible' : 'invisible', 'w-full h-screen fixed bg-[rgb(0,0,0,0.2)] top-0 left-0 z-50 transition-all duration-300']"
+                            />
                             <!-- tooltip -->
                             <p
                                 :class="quickViewVisible ? 'opacity-100 z-[100] translate-y-0' : 'opacity-0 z-[-1] translate-y-[20px]'"
