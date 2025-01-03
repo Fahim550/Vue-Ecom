@@ -1,6 +1,5 @@
 <script setup>
 import { useState } from '@/composables/Store';
-import ProductDetails from '@/views/pages/ProductDetails.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -55,20 +54,12 @@ const wishList = (product) => {
     localStorage.setItem('cartItem', JSON.stringify(state.wishList));
     // console.log('product addToCart', state.addToCart);
 };
-const quickView = () => {
-    event.preventDefault();
-    try {
-        console.log('Toggling wishlist visibility...');
-        productDetailsVisible.value = !productDetailsVisible.value;
-        console.log('WishList visibility:', productDetailsVisible.value);
-    } catch (error) {
-        console.error('Error in handleWishList:', error);
-    }
+const quickView = (product) => {
+    state.quickView = product;
+    console.log('quickView', state.quickView);
+    router.push(`/product/details?productId=${product.id}`);
+};
 
-};
-const productDetailsClose = () => {
-    productDetailsVisible.value = !productDetailsVisible.value;
-};
 const truncateText = (text) => {
     if (text.length > 50) {
         return text.substring(0, 50) + '...';
@@ -82,8 +73,8 @@ const buyNow = (product) => {
 };
 </script>
 <template>
-    <div class="col-span-8 md:col-span-4 lg:col-span-3 p-0 lg:pr-8 lg:pb-8 mt-6 lg:mt-0 justify-items-center h-full group">
-        <div class="w-full group border border-gray-300 rounded-md p-5" style="height: 350px; padding: 2px; border-radius: 10px">
+    <div class="col-span-8 sm:col-span-6 md:col-span-4 lg:col-span-3 p-4 bg-white shadow-md rounded-lg overflow-hidden group relative transition hover:shadow-lg">
+        <div class="w-full group rounded-md p-5">
             <!-- image & action buttons -->
             <div @mouseover="productCardHover = true" @mouseout="productCardHover = false" class="w-full relative cursor-pointer overflow-hidden">
                 <img :alt="'product/image'" :src="props?.src" class="w-full max-h-64 transition ease-linear duration-200 hover:scale-105" />
@@ -117,12 +108,7 @@ const buyNow = (product) => {
                             class="relative w-max group-hover:translate-y-0 transition-all duration-700 opacity-0 group-hover:opacity-100 translate-y-[110px]"
                         >
                             <i class="pi pi-eye rounded-full bg-white p-2 hover:bg-[#0FABCA] hover:text-white transition-all duration-200 cursor-pointer"> </i>
-                            <ProductDetails
-                                v-model:visible="productDetailsVisible"
-                                :productDetails="state"
-                                @click="productDetailsClose"
-                                :class="[productDetailsVisible ? 'visible' : 'invisible', 'w-full h-screen fixed bg-[rgb(0,0,0,0.2)] top-0 left-0 z-50 transition-all duration-300']"
-                            />
+
                             <!-- tooltip -->
                             <p
                                 :class="quickViewVisible ? 'opacity-100 z-[100] translate-y-0' : 'opacity-0 z-[-1] translate-y-[20px]'"
@@ -148,19 +134,32 @@ const buyNow = (product) => {
             </div>
 
             <!-- product details -->
-            <div class="mt-4">
-                <!-- review area -->
-                <div class="flex items-center justify-center gap-[10px] mt-2">
-                    <div class="flex items-center space-x-1">
-                        <div v-for="starRating in 5" :key="starRating">
-                            <i class="pi pi-star-fill" :class="starRating <= rating ? 'text-yellow-400' : 'text-gray-300'" size="16" style="color: chocolate"></i>
-                        </div>
-                    </div>
-                    <span class="text-[0.9rem] text-gray-500">{{ product?.totalQuantity }}</span>
+            <div class="mt-4 flex justify-between">
+                <div>
+                    <h3 class="text-[1rem] sm:text-[1.4rem] md:text-[1.6rem] lg:text-[1.8rem] font-semibold text-start mt-1 text-gray-900">
+                        {{ props?.title }}
+                    </h3>
+                    <h3 class="text-[1rem] sm:text-[0.4rem] md:text-[0.6rem] lg:text-[1rem] font-semibold text-start my-2 text-gray-700">
+                        {{ props?.brand }}
+                    </h3>
+                    <p class="text-lg sm:text-xl md:text-xxl font-bold text-start mt-0.5 text-red-500">
+                        {{ '৳' + props?.price }}
+                    </p>
                 </div>
-
-                <h3 class="text-[1.4rem] font-semibold text-center mt-0.5 text-gray-900">{{ props?.title }}</h3>
-                <p class="text-2xl font-bold text-center mt-0.5 text-red-500">{{ '৳' + props?.price }}</p>
+                <div class="p-1 text-end">
+                    <div
+                        class="bg-surface-0 flex items-center gap-2 justify-center py-1 px-2"
+                        style="
+                            border-radius: 30px;
+                            box-shadow:
+                                0px 1px 2px 0px rgba(0, 0, 0, 0.04),
+                                0px 1px 2px 0px rgba(0, 0, 0, 0.06);
+                        "
+                    >
+                        <span class="text-surface-900 font-medium text-sm">{{ 3 }}</span>
+                        <i class="pi pi-star-fill text-yellow-500"></i>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- <div class="" style="height: 380px; padding: 2px; border-radius: 10px">

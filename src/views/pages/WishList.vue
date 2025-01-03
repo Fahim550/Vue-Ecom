@@ -143,8 +143,12 @@ const removeItem = (item) => {
                             </template>
                         </Column>
                     </DataTable>
-
-                    <!-- <Popover ref="op">
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<!-- <Popover ref="op">
                         <div v-if="selectedProduct" class="rounded flex flex-col">
                             <div class="flex justify-center rounded">
                                 <div class="relative mx-auto">
@@ -180,29 +184,9 @@ const removeItem = (item) => {
                             </div>
                         </div>
                     </Popover> -->
-                </div>
+<!-- Order Summary -->
+<!-- <div class="w-full mr-8">
 
-                <!-- <div v-for="(item, index) in cartItems" :key="index" class="mt-12 flex items-start border-b border-[#d1d1d1] pb-6 justify-between w-full">
-                    <div class="flex items-start gap-5">
-                        <img :src="item?.url" :alt="item.name" class="w-[90px] h-[60px] object-cover rounded-md" />
-                        <div>
-                            <h2 class="text-[1.2rem] font-[600] text-primary">
-                                {{ item?.name }}
-                            </h2>
-                            <p class="text-[1rem] font-[500] text-text">items</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-12">
-                        <h3 class="text-[1.2rem] font-[600] text-[#6d6d6d]">
-                            ৳{{ item?.price }} <span class="text-primary pl-1">{{ item.discountedPrice }}</span>
-                        </h3>
-                        <i class="pi pi-times text-[#6d6d6d] cursor-pointer" @click="removeItem(item)" />
-                    </div>
-                </div> -->
-            </div>
-
-            <!-- Order Summary -->
-            <!-- <div class="w-full mr-8">
                 <div class="bg-[#fff] rounded-md p-6">
                     <h3 class="text-[1rem] text-primary font-[500] border-b border-[#d1d1d1] pb-4 text-center">Order Summary</h3>
                     <div class="flex flex-col gap-5 mt-4">
@@ -226,6 +210,20 @@ const removeItem = (item) => {
                 </div>
                 <button class="w-full py-2 px-6 mt-6 tracking-widest bg-primary rounded-md text-[#fff]">Checkout</button>
             </div> -->
-        </div>
-    </div>
-</template>
+<!-- <div v-for="(item, index) in cartItems" :key="index" class="mt-12 flex items-start border-b border-[#d1d1d1] pb-6 justify-between w-full">
+                    <div class="flex items-start gap-5">
+                        <img :src="item?.url" :alt="item.name" class="w-[90px] h-[60px] object-cover rounded-md" />
+                        <div>
+                            <h2 class="text-[1.2rem] font-[600] text-primary">
+                                {{ item?.name }}
+                            </h2>
+                            <p class="text-[1rem] font-[500] text-text">items</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-12">
+                        <h3 class="text-[1.2rem] font-[600] text-[#6d6d6d]">
+                            ৳{{ item?.price }} <span class="text-primary pl-1">{{ item.discountedPrice }}</span>
+                        </h3>
+                        <i class="pi pi-times text-[#6d6d6d] cursor-pointer" @click="removeItem(item)" />
+                    </div>
+                </div> -->

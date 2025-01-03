@@ -131,11 +131,11 @@ const router = createRouter({
                     name: 'landing',
                     component: () => import('@/views/pages/Landing.vue')
                 },
-                // {
-                //     path: '/product/details',
-                //     name: 'ProductDetails',
-                //     component: () => import('@/views/pages/ProductDetails.vue')
-                // },
+                {
+                    path: '/product/details',
+                    name: 'ProductDetails',
+                    component: () => import('@/views/pages/ProductDetails.vue')
+                },
                 {
                     path: '/allproduct',
                     name: 'allproduct',

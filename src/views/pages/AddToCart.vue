@@ -101,8 +101,70 @@ onMounted(() => {
 });
 </script>
 <template list="state.addToCart">
-    <div class="flex flex-col bg-gray-100 shadow-md py-2">
-        <div v-for="(item, index) in localState.addToCart" :key="index" class="col-span-1 w-10/12 bg-gray-200 mx-auto border-2 border-white p-2">
+    <div class="flex flex-col shadow-md py-2">
+        <div class="container mx-auto p-6">
+            <h1 class="text-2xl font-bold mb-4">Shopping Cart</h1>
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="text-left bg-gray-100">
+                        <th class="p-4">Image</th>
+                        <th class="p-4">Product Name</th>
+                        <th class="p-4">Quantity</th>
+                        <th class="p-4">Price</th>
+                        <th class="p-4">Total Price</th>
+                        <th class="p-4">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(product, index) in localState.addToCart" :key="product.id" class="border-b hover:bg-gray-50">
+                        <!-- Product Image -->
+                        <td class="p-4">
+                            <img :src="product?.url" :alt="product.name" class="w-16 h-16 object-cover rounded" />
+                        </td>
+
+                        <!-- Product Name -->
+                        <td class="p-4">
+                            <h3 class="text-lg font-semibold">{{ product?.name }}</h3>
+                            <p class="text-gray-500">Brand: {{ product?.brand }}</p>
+                            <p class="text-gray-500">Size: {{ product?.size }}</p>
+                        </td>
+
+                        <!-- Quantity Controls -->
+                        <td class="p-4">
+                            <button class="p-2.5 bg-gray-50 rounded-l-3xl text-gray-700 text-[1.1rem]" @click="handleDecrement(product)">
+                                <span class="font-bold text-xl">-</span>
+                            </button>
+                            <input
+                                type="number"
+                                :value="product.quantity"
+                                min="1"
+                                class="w-12 bg-gray-50 py-2.5 outline-none focus:ring-0 border-none text-center text-[1.1rem]"
+                                v-if="product.quantity == 0 ? (product.quantity = 1) : product.quantity"
+                                @input="(event) => handleInputValueChange(product, event)"
+                            />
+                            <button class="p-2.5 bg-gray-50 rounded-r-3xl text-gray-700 text-[1.1rem]" @click="handleIncrement(product)">
+                                <span>+</span>
+                            </button>
+                        </td>
+
+                        <!-- Price -->
+                        <td class="p-4">${{ product?.price }}</td>
+
+                        <!-- Total Price -->
+                        <td class="p-4">${{ (product?.quantity * product.price)?.toFixed(2) }}</td>
+
+                        <!-- Remove Action -->
+                        <td class="p-4">
+                            <button @click="deleteCartItem(index)" class="bg-gray-200 hover:bg-gray-300 p-2 rounded text-red-500">🗑️</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="flex justify-end mt-6">
+                <!-- <h3 class="text-xl font-bold">Total: ${{ totalPrice.toFixed(2) }}</h3> -->
+            </div>
+        </div>
+        <!-- <div v-for="(item, index) in localState.addToCart" :key="index" class="col-span-1 w-10/12 bg-gray-200 mx-auto border-2 border-white p-2">
             <div class="flex flex-col sm:flex-row sm:items-center px-6 gap-4" :class="{ 'border-t border-surface': index !== 0 }">
                 <div class="md:w-40 relative">
                     <img class="block xl:block mx-auto rounded w-full" :src="`${item.url}`" :alt="item.name" />
@@ -139,7 +201,7 @@ onMounted(() => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="flex justify-center gap-2 mr-6 m-2">
             <section class="col-span-1" v-if="localState.nextClicked">
                 <p class="my-8 text-3xl font-bold">Shipping details</p>

@@ -3,7 +3,8 @@ import { reactive } from 'vue';
 // global state, created in module scope
 const state = reactive({
     addToCart: [],
-    wishList: []
+    wishList: [],
+    quickView: []
 });
 
 export function useState() {
