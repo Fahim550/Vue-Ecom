@@ -1,10 +1,12 @@
 <script setup>
 import { useState } from '@/composables/Store';
 import { reactive, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 
 const props = defineProps(['visible', 'wishList']);
 const emit = defineEmits(['update:visible']);
 const { state } = useState();
+const router = useRouter();
 const localState = reactive({
     addToCart: [],
     wishList: []
@@ -19,6 +21,7 @@ watch(
         console.log('Updated cartItems:', cartItems.value);
     }
 );
+
 const toggleModal = () => {
     emit('update:visible', false); // Notify the parent to hide the modal
     console.log('Modal visibility updated:', props.visible);
@@ -47,6 +50,20 @@ const addToCart = (product) => {
     localStorage.setItem('cartItem', JSON.stringify(state.addToCart));
     // console.log('product addToCart', state.addToCart);
 };
+const quickView = async (product) => {
+    // console.log('quickView product', product);
+    state.quickView = product;
+    emit('update:visible', false);
+    // await toggleModal();
+    // console.log('Navigating to:', `/product/details?productId=${product.id}`);
+    setTimeout(() => {
+        router.push({
+            path: '/product/details',
+            query: { productId: product.id },
+        });
+    }, 100);
+};
+
 const removeItem = (item) => {
     const index = cartItems.value.findIndex((cartItem) => cartItem.name === item.name);
     if (index !== -1) {
@@ -116,7 +133,7 @@ const removeItem = (item) => {
                 <!-- Products -->
 
                 <div class="card">
-                    <DataTable :value="cartItems" rows="10" paginator tableStyle="min-width: 50rem">
+                    <DataTable :value="cartItems" tableStyle="min-width: 50rem">
                         <Column field="id" header="Id" class="w-1/6"></Column>
                         <Column field="name" header="Name" class="w-1/6" bodyClass="whitespace-nowrap"></Column>
                         <Column field="price" header="Price" sortable class="w-1/6">
@@ -129,7 +146,7 @@ const removeItem = (item) => {
                         </Column>
                         <Column header="Details" class="w-1/6">
                             <template #body="slotProps">
-                                <Button type="button" @click="displayProduct(slotProps.data)" icon="pi pi-eye" severity="secondary" rounded></Button>
+                                <Button type="button" @click="quickView(slotProps.data)" icon="pi pi-eye" severity="secondary" rounded></Button>
                             </template>
                         </Column>
                         <Column header="Remove" class="w-1/6">

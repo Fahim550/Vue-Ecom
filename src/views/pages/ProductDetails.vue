@@ -1,10 +1,6 @@
 <script setup>
 import { useState } from '@/composables/Store';
-import { useRouter } from 'vue-router';
-const props = defineProps(['visible', 'productDetails']);
-const emit = defineEmits(['update:visible']);
 const { state } = useState();
-const router = useRouter();
 console.log('productDetails', state?.quickView);
 const addToCart = (product) => {
     if (state.addToCart.length !== 0) {

@@ -55,6 +55,7 @@ const wishList = (product) => {
     // console.log('product addToCart', state.addToCart);
 };
 const quickView = (product) => {
+    console.log('product', product);
     state.quickView = product;
     console.log('quickView', state.quickView);
     router.push(`/product/details?productId=${product.id}`);
@@ -73,7 +74,7 @@ const buyNow = (product) => {
 };
 </script>
 <template>
-    <div class="col-span-8 sm:col-span-6 md:col-span-4 lg:col-span-3 p-4 bg-white shadow-md rounded-lg overflow-hidden group relative transition hover:shadow-lg">
+    <div class="col-span-7 sm:col-span-6 md:col-span-4 lg:col-span-3 p-4 bg-white shadow-md rounded-lg overflow-hidden group relative transition hover:shadow-lg">
         <div class="w-full group rounded-md p-5">
             <!-- image & action buttons -->
             <div @mouseover="productCardHover = true" @mouseout="productCardHover = false" class="w-full relative cursor-pointer overflow-hidden">
@@ -142,9 +143,15 @@ const buyNow = (product) => {
                     <h3 class="text-[1rem] sm:text-[0.4rem] md:text-[0.6rem] lg:text-[1rem] font-semibold text-start my-2 text-gray-700">
                         {{ props?.brand }}
                     </h3>
-                    <p class="text-lg sm:text-xl md:text-xxl font-bold text-start mt-0.5 text-red-500">
-                        {{ '৳' + props?.price }}
-                    </p>
+                    <div class="flex gap-2">
+
+                        <p class="text-lg sm:text-xl md:text-xxl font-bold text-start mt-0.5  text-red-500">
+                            {{ '৳' + props?.price }}
+                        </p>
+                        <p class="text-sm sm:text-base md:text-lg font-bold text-start mt-0.5 line-through">
+                            {{ '৳' + (props?.price * 1.12).toFixed(2) }}
+                        </p>
+                    </div>
                 </div>
                 <div class="p-1 text-end">
                     <div

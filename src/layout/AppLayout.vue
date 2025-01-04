@@ -83,7 +83,7 @@ onMounted(async () => {
         <app-sidebar></app-sidebar>
         <div class="layout-main-container">
             <div class="layout-main">
-                <router-view></router-view>
+                <router-view :key="$route.fullPath"></router-view>
             </div>
             <app-footer></app-footer>
         </div>
