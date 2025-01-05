@@ -1,7 +1,10 @@
 <script setup>
+import Service from '@/components/landing-page/service/Service.vue';
+import Benner from '@/components/landing-page/benner/Benner.vue';
 import HeroSection from '@/components/landing-page/hero/Section.vue';
 import ProductCategory from '@/components/landing-page/product-categories/Section.vue';
 import Product from '@/components/landing-page/product/Section.vue';
+import OfferBenner from '@/components/landing-page/benner/OfferBenner.vue';
 
 function smoothScroll(id) {
     document.body.click();
@@ -15,8 +18,11 @@ function smoothScroll(id) {
     <div class="bg-surface-0 dark:bg-surface-900">
         <div id="home" class="overflow-hidden">
             <HeroSection />
-            <ProductCategory />
+            <Service/>
+            <Benner/>
+            <!-- <ProductCategory /> -->
             <Product />
+            <OfferBenner/>
 
             <!-- <div id="highlights" class="py-6 px-6 lg:px-20 mx-0 my-12 lg:mx-20">
                 <div class="text-center">

@@ -25,8 +25,9 @@ onMounted(async () => {
     <div id="features" class="py-6 px-6 lg:px-20 mt-8 mx-0 lg:mx-20">
         <div class="grid grid-cols-12 gap-4 justify-center">
             <div class="col-span-12 text-center mt-20 mb-6">
-                <div class="text-surface-900 dark:text-surface-0 font-normal mb-2 text-4xl">Trending Now</div>
-                <span class="text-muted-color text-2xl">Placerat in egestas erat...</span>
+                <div class="text-surface-900 dark:text-surface-0 font-normal mb-2 text-4xl">Popular Products</div>
+                <span class="text-muted-color text-2xl">Here is our new arraival products that you may like.</span>
+                <span class="absolute mx-auto mt-10 left-0 right-0 w-36 h-1 bg-green-500"></span>
             </div>
 
             <Card v-for="product in state.productData" :title="product.name" :description="product.description" :price="product.price" :src="product.url" :id="product.id" :quantity="product.quantity" :product="product" :key="product" />
