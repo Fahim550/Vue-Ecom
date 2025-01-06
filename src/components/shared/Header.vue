@@ -1,7 +1,7 @@
 <script setup>
 import { useState } from '@/composables/Store';
 import WishList from '@/views/pages/WishList.vue';
-import { Dialog, DialogPanel, Disclosure, DisclosureButton, DisclosurePanel, Popover, PopoverButton, PopoverGroup, PopoverPanel } from '@headlessui/vue';
+import { Dialog, DialogPanel, Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue';
 import { Bars3Icon, ChevronDownIcon } from '@heroicons/vue/20/solid';
 import { onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
@@ -22,6 +22,42 @@ function smoothScroll(id) {
 const mobileMenuOpen = ref(false);
 const wishListVisible = ref(false);
 
+const products = [
+    { label: 'Home', route: '/', icon: 'pi pi-home' },
+    {
+        label: 'Product',
+        route: '/allproduct',
+        icon: 'pi pi-search',
+        items: [
+            {
+                label: 'Trending'
+            },
+            {
+                label: 'Popular'
+            },
+            {
+                label: 'New Arrivals'
+            },
+            {
+                label: 'Best Sellers'
+            }
+        ]
+    },
+    {
+        label: 'About',
+        route: '/',
+        icon: 'pi pi-server'
+    },
+    {
+        label: 'Contact',
+        route: '/',
+        icon: 'pi pi-envelope'
+    }
+];
+const callsToAction = [
+    { name: 'Watch demo', href: '#', icon: 'pi pi-chart-pie' },
+    { name: 'Contact sales', href: '#', icon: 'pi pi-chart-pie' }
+];
 const handleWishList = (event) => {
     event.preventDefault();
     try {
@@ -82,13 +118,30 @@ watch(JSON.stringify(sessionStorage.getItem('cartProduct')), () => {
             </RouterLink>
 
             <div class="items-center grow justify-around hidden lg:flex absolute lg:static w-full left-0 top-full px-12 lg:px-0 z-20 rounded-border">
-                <PopoverGroup class="hidden lg:flex lg:gap-x-12">
+                <div class="">
+                    <Menubar :model="products">
+                        <template #item="{ item }">
+                            <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
+                                <a v-ripple class="flex items-center cursor-pointer text-surface-700 dark:text-surface-0 px-4 py-2" :href="href" @click="navigate">
+                                    <span :class="item.icon" />
+                                    <span class="ml-2 text-xl">{{ item.label }}</span>
+                                    <span v-if="item.items" class="pi pi-angle-down text-primary ml-auto" />
+                                </a>
+                            </router-link>
+                            <a v-else v-ripple class="flex items-center cursor-pointer text-surface-700 dark:text-surface-0 px-4 py-2" :href="item.url" :target="item.target">
+                                <span :class="item.icon" />
+                                <span class="ml-2">{{ item.label }}</span>
+                            </a>
+                        </template>
+                    </Menubar>
+                </div>
+                <!-- <PopoverGroup class="hidden lg:flex lg:gap-x-12">
                     <RouterLink to="/" class="text-xl font-semibold text-gray-900">Home</RouterLink>
 
-                    <Popover class="relative">
-                        <PopoverButton class="flex items-center gap-x-1 text-xl font-semibold text-gray-900">
-                            <RouterLink to="/allproduct" @click="smoothScroll('#features')"> Product </RouterLink>
-                            <ChevronDownIcon class="size-5 flex-none text-gray-400" aria-hidden="true" />
+                    <Popover v-slot="{ open }" class="relative">
+                        <PopoverButton :class="open ? 'text-white' : 'text-white/90'" class="flex items-center gap-x-1 text-xl font-semibold text-gray-900">
+                            <RouterLink to="/allproduct" :class="open ? 'text-green-300' : 'text-orange-300/70'" @click="smoothScroll('#features')"> Product </RouterLink>
+                            <ChevronDownIcon :class="open ? 'text-orange-300' : 'text-orange-300/70'" class="size-5 flex-none text-gray-400" aria-hidden="true" />
                         </PopoverButton>
 
                         <transition
@@ -101,16 +154,16 @@ watch(JSON.stringify(sessionStorage.getItem('cartProduct')), () => {
                         >
                             <PopoverPanel class="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
                                 <div class="p-4">
-                                    <div v-for="item in products" :key="item.name" class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm hover:bg-gray-50">
+                                    <div v-for="item in products" :key="item?.name" class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm hover:bg-gray-50">
                                         <div class="flex size-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                                            <component :is="item.icon" class="size-6 text-gray-600 group-hover:text-indigo-600" aria-hidden="true" />
+                                            <component :is="item?.icon" class="size-6 text-gray-600 group-hover:text-indigo-600" aria-hidden="true" />
                                         </div>
                                         <div class="flex-auto">
-                                            <a :href="item.href" class="block font-semibold text-gray-900">
-                                                {{ item.name }}
+                                            <a :href="item?.href" class="block font-semibold text-gray-900">
+                                                {{ item?.name }}
                                                 <span class="absolute inset-0" />
                                             </a>
-                                            <p class="mt-1 text-gray-600">{{ item.description }}</p>
+                                            <p class="mt-1 text-gray-600">{{ item?.description }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -120,7 +173,7 @@ watch(JSON.stringify(sessionStorage.getItem('cartProduct')), () => {
 
                     <a href="#" class="text-xl font-semibold text-gray-900">About Us</a>
                     <a href="#" class="text-xl font-semibold text-gray-900">Contact Us</a>
-                </PopoverGroup>
+                </PopoverGroup> -->
             </div>
             <!-- nav right -->
             <div class="flex gap-4">
